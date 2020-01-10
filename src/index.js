@@ -4,7 +4,7 @@ const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 
 const PORT = 8080;
-const HOST = '0.0.0.0';
+// const HOST = '0.0.0.0';
 
 const app = express();
 
@@ -18,5 +18,10 @@ app.use(
 app.use(authRoutes);
 app.use(userRoutes);
 
-app.listen(PORT, HOST);
-console.log(`Running on http://${HOST}:${PORT}`);
+// app.listen(PORT, HOST);
+// console.log(`Running on http://${HOST}:${PORT}`);
+
+// app.listen(PORT);
+app.listen(PORT, err => {
+  console.log(`Listening on port ${PORT}`);
+});
