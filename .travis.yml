@@ -10,7 +10,7 @@ before_install:
   - docker push lukemain/ontrack-server
   # deploy:
 #   provider: elasticbeanstalk
-#    region: us-east-1
+#   region: us-east-1
 #   app: multi-docker
 #   env: MultiDocker-env
 #   bucket_name: elasticbeanstalk-us-east-1-418216010081
