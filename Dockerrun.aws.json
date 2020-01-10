@@ -1,0 +1,12 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "server",
+      "image": "lukemain/ontrack-server",
+      "hostname": "ontrack-server",
+      "essential": false,
+      "memory": 128
+    }
+  ]
+}

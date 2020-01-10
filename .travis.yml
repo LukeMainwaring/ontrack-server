@@ -8,14 +8,14 @@ script:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take these images and push them to docker hub
   - docker push lukemain/ontrack-server
-  # deploy:
-#   provider: elasticbeanstalk
-#   region: us-east-1
-#   app: multi-docker
-#   env: MultiDocker-env
-#   bucket_name: elasticbeanstalk-us-east-1-418216010081
-#   bucket_path: docker-multi
-#   on:
-#     branch: master
-#   access_key_id: $AWS_ACCESS_KEY
-#   secret_access_key: $AWS_SECRET_KEY
+deploy:
+  provider: elasticbeanstalk
+  region: us-east-1
+  app: ontrack-server
+  env: OntrackServer-env
+  bucket_name: elasticbeanstalk-us-east-1-418216010081
+  bucket_path: ontrack-server-deploy
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
