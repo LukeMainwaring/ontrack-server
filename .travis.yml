@@ -3,12 +3,10 @@ services:
   - docker
 
 script:
-  # - docker build -t lukemain/ontrack-nginx ./nginx
   - docker build -t lukemain/ontrack-server .
   # Log in to Docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take these images and push them to docker hub
-  # - docker push lukemain/ontrack-nginx
   - docker push lukemain/ontrack-server
 deploy:
   provider: elasticbeanstalk
