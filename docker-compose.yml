@@ -2,6 +2,13 @@ version: '3'
 services:
   ontrack-db:
     image: 'postgres:latest'
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - '3050:80'
   ontrack-server:
     build:
       context: .
@@ -17,6 +24,7 @@ services:
       - PGDATABASE=postgres
       - PGPASSWORD=postgres_password
       - PGPORT=5432
+      - NODE_ENV=development
     restart: always
     ports:
       - '8080:8080'
