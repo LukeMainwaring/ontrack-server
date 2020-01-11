@@ -5,7 +5,13 @@
       "name": "server",
       "image": "lukemain/ontrack-server",
       "hostname": "ontrack-server",
-      "essential": false,
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 8080
+        }
+      ],
       "memory": 128
     }
   ]
