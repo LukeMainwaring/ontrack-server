@@ -7,19 +7,6 @@
       "hostname": "ontrack-server",
       "essential": false,
       "memory": 128
-    },
-    {
-      "name": "nginx",
-      "image": "lukemain/ontrack-nginx",
-      "essential": true,
-      "portMappings": [
-        {
-          "hostPort": 80,
-          "containerPort": 80
-        }
-      ],
-      "links": ["server"],
-      "memory": 128
     }
   ]
 }
