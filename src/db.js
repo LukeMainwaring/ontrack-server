@@ -24,11 +24,11 @@ CREATE TABLE IF NOT EXISTS users(
 `;
 
 const initUsers = `
-INSERT INTO users (id, first_name, last_name, email, password, created_at) VALUES
-  (1, 'test', 'test', test@g.co', 'password1', '2019-02-28 13:20:20'),
-  (2, 'john', 'j', 'john@g.co', 'password2', '2019-02-28 13:20:20'),
-  (3, 'tuts', 't', 'tuts@g.co', 'password3', '2019-02-28 13:20:20'),
-  (4, 'tut', 't', 'tut@g.co', 'password4', '2019-02-28 13:20:20'),
+INSERT INTO users (first_name, last_name, email, password) VALUES
+  ('test', 'test', test@g.co', 'password1'),
+  ('john', 'j', 'john@g.co', 'password2'),
+  ('tuts', 't', 'tuts@g.co', 'password3'),
+  ('tut', 't', 'tut@g.co', 'password4'),
 `;
 
 pgClient.query(initScript).catch(err => console.log(err));

@@ -7,7 +7,6 @@ const router = express.Router();
 
 // Add a new user
 router.post('/signup', async (req, res) => {
-  console.log('Signing up user...');
   const { firstName, lastName, email, password } = req.body;
   // TODO: more validation
   if (!firstName) {
@@ -24,25 +23,17 @@ router.post('/signup', async (req, res) => {
   }
 
   const sql =
-    'INSERT INTO users (first_name, last_name, email, password) VALUES($1, $2, $3, $4) ';
+    'INSERT INTO users (first_name, last_name, email, password) VALUES($1, $2, $3, $4)';
   // generate encrypted password before signup
   bcrypt.genSalt(10, (err, salt) => {
-    if (err) {
-      console.log(err);
-      res.status(401).send({ error: err });
-      // throw err
-    }
+    if (err) throw err;
     bcrypt.hash(password, salt, (err, hash) => {
-      if (err) {
-        console.log(err);
-        res.status(402).send({ error: err });
-        // throw err
-      }
+      if (err) throw err;
       const user = [firstName, lastName, email, hash];
       db.query(sql, user, (error, results, fields) => {
         if (error) {
           // TODO: format to a better error message
-          return res.status(403).send({ error: error.sqlMessage });
+          return res.status(422).send({ error: error.sqlMessage });
         }
 
         const token = jwt.sign({ userId: email }, 'MY_SECRET_KEY');
