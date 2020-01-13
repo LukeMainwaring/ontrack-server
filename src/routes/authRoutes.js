@@ -7,6 +7,7 @@ const router = express.Router();
 
 // Add a new user
 router.post('/signup', async (req, res) => {
+  console.log('Signing up user...');
   const { firstName, lastName, email, password } = req.body;
   // TODO: more validation
   if (!firstName) {
@@ -26,9 +27,17 @@ router.post('/signup', async (req, res) => {
     'INSERT INTO users (first_name, last_name, email, password) VALUES($1, $2, $3, $4) ';
   // generate encrypted password before signup
   bcrypt.genSalt(10, (err, salt) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.status(422).send({ error: err });
+      // throw err
+    }
     bcrypt.hash(password, salt, (err, hash) => {
-      if (err) throw err;
+      if (err) {
+        console.log(err);
+        res.status(422).send({ error: err });
+        // throw err
+      }
       const user = [firstName, lastName, email, hash];
       db.query(sql, user, (error, results, fields) => {
         if (error) {
