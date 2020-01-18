@@ -68,7 +68,7 @@ router.post('/signin', async (req, res) => {
       bcrypt.compare(password, user.password, function(err, isMatch) {
         if (isMatch) {
           const token = jwt.sign({ userId: user.id }, 'MY_SECRET_KEY');
-          res.send({ token });
+          res.send({ token, userId: user.id });
         } else {
           return res.status(422).send({ error: 'Invalid password or email' });
         }
