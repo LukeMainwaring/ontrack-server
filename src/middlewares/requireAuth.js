@@ -11,13 +11,14 @@ module.exports = (req, res, next) => {
   const token = authorization.replace('Bearer ', '');
   jwt.verify(token, 'MY_SECRET_KEY', async (err, payload) => {
     if (err) {
+      console.log('failed to verify!!  ', token);
       return res.status(401).send({ error: 'You must be logged in' });
     }
     const { userId } = payload;
 
     db.query(
-      'SELECT * FROM users where email=?',
-      userId,
+      'SELECT * FROM users where id=$1',
+      [userId],
       (error, results, fields) => {
         if (error) throw error;
         req.user = results[0];

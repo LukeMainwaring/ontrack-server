@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('../db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const uuidv1 = require('uuid/v1');
 
 const router = express.Router();
 
@@ -23,23 +24,24 @@ router.post('/signup', async (req, res) => {
   }
 
   const sql =
-    'INSERT INTO users (first_name, last_name, email, password) VALUES($1, $2, $3, $4)';
+    'INSERT INTO users (id, first_name, last_name, email, password) VALUES($1, $2, $3, $4, $5)';
   // generate encrypted password before signup
   bcrypt.genSalt(10, (err, salt) => {
     if (err) throw err;
     bcrypt.hash(password, salt, (err, hash) => {
       if (err) throw err;
-      const user = [firstName, lastName, email, hash];
+      const id = uuidv1();
+      const user = [id, firstName, lastName, email, hash];
       db.query(sql, user, (error, results, fields) => {
         if (error) {
-          // TODO: format to a better error message
-          return res.status(422).send({ error: error.sqlMessage });
+          errorMessage = formatErrorResponse(error.detail);
+          return res.status(422).send({ error: errorMessage });
         }
-
-        const token = jwt.sign({ userId: email }, 'MY_SECRET_KEY');
+        const token = jwt.sign({ userId: id }, 'MY_SECRET_KEY');
         res.send({
           message: 'New user has been created successfully.',
-          token
+          token,
+          userId: id
         });
       });
     });
@@ -76,5 +78,14 @@ router.post('/signin', async (req, res) => {
     }
   );
 });
+
+formatErrorResponse = errorResponse => {
+  if (
+    errorResponse.startsWith('Key (email)') &&
+    errorResponse.endsWith('already exists.')
+  ) {
+    return 'An account with this email already exists';
+  }
+};
 
 module.exports = router;

@@ -21,13 +21,15 @@ router.get('/user/:id', (req, res) => {
     return res.status(400).send({ message: 'Please provide user_id' });
   }
   db.query(
-    'SELECT * FROM users where id=?',
-    user_id,
+    'SELECT first_name, last_name, email FROM users where id=$1',
+    [user_id],
     (error, results, fields) => {
-      if (error) throw error;
+      // if (error) throw error;
+      if (error) {
+        res.status(422).send({ error: error.sqlMessage });
+      }
       res.send({
-        data: results[0],
-        message: 'users list.'
+        user: results.rows[0]
       });
     }
   );
